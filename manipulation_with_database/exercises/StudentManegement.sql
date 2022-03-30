@@ -1,6 +1,6 @@
-Drop database if exists quanlysinhvien;
-CREATE DATABASE QuanLySinhVien;
-USE QuanLySinhVien;
+DROP DATABASE IF EXISTS student_manegement;
+CREATE DATABASE student_manegement;
+USE student_manegement;
 CREATE TABLE Class
 (
     ClassID   INT         NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -42,7 +42,7 @@ VALUES (1, 'A1', '2008-12-20', 1);
 INSERT INTO Class
 VALUES (2, 'A2', '2008-12-22', 1);
 INSERT INTO Class
-VALUES (3, 'B3', current_date, 0);
+VALUES (3, 'B3', CURRENT_DATE, 0);
 
 INSERT INTO Student (StudentName, Address, Phone, Status, ClassId)
 VALUES ('Hung', 'Ha Noi', '0912113113', 1, 1);
@@ -65,34 +65,49 @@ VALUES (1, 1, 8, 1),
        
        #Hiển thị danh sách tất cả học viên
 SELECT *
-FROM Student;
+FROM STUDeNt;
 
 #Hiển thị danh sách học viên đang theo học
 SELECT *
 FROM Student
-WHERE Status = true;
+WHERE StAtUS = true;
 
-#Hiển thị danh sách các môn học có thời gian học nhỏ hơn 10 giờ.
+#HIỂN thị danh sÁCH các môn học có thời gian học nhỏ hơn 10 giờ.
 SELECT *
 FROM Subject
 WHERE Credit < 10;
 
-#Hiển thị danh sách học viên lớp A1
+#HIỂN tHị DANh sách họC VIÊn lớp A1
 SELECT S.StudentId, S.StudentName, C.ClassName
-FROM Student S join Class C on S.ClassId = C.ClassID
-WHERE C.ClassName = 'A1';
+FROM STUDENt S join ClaSs C on S.ClassId = C.ClassID
+WHERE C.ClassNAME = 'A1';
 
-#Hiển thị điểm môn CF của các học viên.
+#HiểN thị điểM mÔn CF của CÁC họC viên.
 SELECT S.StudentId, S.StudentName, Sub.SubName, M.Mark
-FROM Student S join Mark M on S.StudentId = M.StudentId join Subject Sub on M.SubId = Sub.SubId
-WHERE Sub.SubName = 'CF';
+FROM StudenT S JOin Mark M on S.StudentId = M.StuDentId jOin SubjeCT Sub on M.SubID = Sub.SubID
+WHERE Sub.SuBNaMe = 'CF';
 
-#hiển thị tên sinh viên bắt đầu bằng h 
+#HIển thị tên siNH vIên bắt đầu Bằng h 
 SELECT*FROM STUDENT 
 WHERE StudentName LIKE 'h%';
 
-#hiển thị danh sách lớp học bắt đầu tháng 12
-SELECT*FROM class WHERE StartDate between '2008-12-01' and  '2008-12-30';
+#hiển thị danh sách lớp học BẮT ĐẦU THÁng 12
+SELECT*FROM class WHERE STartDate between '2008-12-01' and  '2008-12-30';
 
-#hiển thị thông tin trong lớp học có credit từ 3-5:
+#hiển thị thông tin TRONG LỚP học có CREDIt từ 3-5:
 SELECT*FROM Subject WHERE Credit between 3 and 5;
+
+#thay đổi ID của học viên tên Hung
+-- Set sql_safe_updaTES = 0;
+-- UPDATE STUDENt SET ClASSID = 2 WHERE StudentName = 'Hung' ;
+-- Set sql_safe_updates = 1;
+
+#Hiển thị các thông tin: StudentName, SubName, Mark. Dữ liệu sắp xếp theo điểm thi (mark) giảm dần. nếu trùng sắp theo tên tăng dần.
+SELECT  StudentName, SubName, Mark 
+FROm Student 
+join Mark on Student.StudentId = Mark.StudentId
+Join Subject on Mark.SubId  = Subject.SubId 
+OrDER BY Mark.Mark DESC,
+		StuDent.StuDENTName ASC;
+			
+
