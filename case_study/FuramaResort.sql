@@ -210,7 +210,8 @@ values 	(1,"2020-12-08","2020-12-08",0,3,1,3),
 
 INSERT INTO `furama_resort`.`hop_dong_chi_tiet` (`so_luong`,`ma_hop_dong`, `ma_dich_vu_di_kem`) 
 value	(5, 2, 4),
-		(15, 2, 5),
+		(8, 2, 5),
+		(15, 2, 6),
 		(1, 3, 1),
 		(11, 3, 2),	
 		(1, 1, 3),
@@ -219,5 +220,4 @@ value	(5, 2, 4),
         
 
  
-
 
