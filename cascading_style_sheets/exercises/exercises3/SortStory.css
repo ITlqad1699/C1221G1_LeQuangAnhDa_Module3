@@ -1,0 +1,78 @@
+body{
+    background-color: #ecf0f1;
+    font-style: italic;
+}
+ul,li{
+    list-style: none;
+}
+#img1{
+    height: 500px;
+    width: auto;
+    image-rendering: pixelated;
+    object-fit: contain;
+    animation-name:move;
+    animation-duration:10s;
+    animation-iteration-count:infinite;
+    position: relative;
+}
+hr{
+    width: 500px;
+}
+h1{
+    text-align: center;
+    font-size: 300%;
+    font-weight: lighter;
+    font-style: italic;
+    color: firebrick;
+}
+/*.pictureholder{*/
+/*    text-align: center;*/
+/*}*/
+.contensHolder{
+    text-align: center;
+    font-size: x-large;
+}
+.chapterHolder{
+    font-size: 200%;
+    margin-bottom: 10px;
+    color: darkslateblue;
+}
+a {
+    text-decoration: none;
+}
+#fullStory{
+    margin-left: 300px;
+    margin-right: 300px;
+    position: relative;
+}
+p{
+    white-space: pre-wrap;
+}
+.main{
+    font-size: 25px;
+}
+html {
+    scroll-behavior: smooth;
+}
+@keyframes move{
+    0%{
+        left:0px;
+    }
+    50% {
+        left: 500px;
+    }
+    100%{
+        left:0px;
+    }
+    100%{
+        right:500px;
+    }
+    0%{
+        right:500px;
+    }
+}
+.hinh{
+    position: fixed;
+    left: 25px;
+    bottom: 25px;
+}

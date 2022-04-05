@@ -125,6 +125,8 @@ having count(hop_dong.ma_nhan_vien) in (1,2,3);
 
 #16	Xóa những Nhân viên chưa từng lập được hợp đồng nào từ năm 2019 đến năm 2021.
 -- tạo ra view giả để lấy trường dữ liệu:
+#cách 1:
+drop view if exists view_nhan_vien ;
 create view view_nhan_vien as 
 select nhan_vien.ma_nhan_vien
 	from nhan_vien 
@@ -132,7 +134,6 @@ select nhan_vien.ma_nhan_vien
 	group by nhan_vien.ma_nhan_vien 
 	having count(hop_dong.ma_nhan_vien) = 0;
 select * from view_nhan_vien;
-drop view view_nhan_vien;
 --  hàm xóa nhân viên 
 DELIMITER // 
 drop procedure if exists delete_nhan_vien//
@@ -147,6 +148,15 @@ DELIMITER ;
 
 call delete_nhan_vien;
 
+#cách 2:
+delete from nhan_vien
+where nhan_vien.ma_nhan_vien not in (	
+	select ma_nhan_vien from (
+		select distinct nhan_vien.ma_nhan_vien
+		from  nhan_vien
+		join hop_dong on hop_dong.ma_nhan_vien = nhan_vien.ma_nhan_vien
+		where year(hop_dong.ngay_lam_hop_dong) between '2019' and '2021') as table_nhan_vien_gia);
+
 -- test lại nào anh em: 
 select nhan_vien.ma_nhan_vien, nhan_vien.ho_ten
 	from nhan_vien 
@@ -155,35 +165,349 @@ select nhan_vien.ma_nhan_vien, nhan_vien.ho_ten
 	having count(hop_dong.ma_nhan_vien) > 0;
     
 #17	Cập nhật thông tin những khách hàng có ten_loai_khach từ Platinum lên Diamond, chỉ cập nhật những khách hàng đã từng đặt phòng với Tổng Tiền thanh toán trong năm 2021 là lớn hơn 10.000.000 VNĐ
-drop view if exists view_tong_tien;
-create view view_tong_tien as 
-SELECT khach_hang.ma_khach_hang,sum(COALESCE(hop_dong_chi_tiet.so_luong*dich_vu_di_kem.gia,0)+dich_vu.chi_phi_thue) as tong_tien  fROM khach_hang
-LEFT JOIN loai_khach On loai_khach.ma_loai_khach = khach_hang.ma_loai_khach  
-lEFT JOIN hop_dong  On khach_hang.ma_khach_hang = hop_dong.ma_khach_hang 
-left join dich_vu ON dich_vu.ma_dich_vu = hop_dong.ma_dich_vu
-LEFT JOiN hop_dong_chi_tiet ON hop_dong_chi_tiet.ma_hop_dong = hop_dong.ma_hop_dong
-LEfT JOIN dich_vu_di_kem ON dich_vu_di_kem.ma_dich_vu_di_kem = hop_dong_chi_tiet.ma_dich_vu_di_kem
-GROUP BY  hop_dong.ma_hop_dong,khach_hang.ma_khach_hang;
+DROP VIEW IF EXISTS view_tong_tien;
+CREATE VIEW view_tong_tien AS 
+SELECT khach_hang.ma_khach_hang FROM khach_hang
+LEFT JOIN loai_khach ON loai_khach.ma_loai_khach = khach_hang.ma_loai_khach  
+LEFT JOIN hop_dong  ON khach_hang.ma_khach_hang = hop_dong.ma_khach_hang 
+LEFT JOIN dich_vu ON dich_vu.ma_dich_vu = hop_dong.ma_dich_vu
+LEFT JOIN hop_dong_chi_tiet ON hop_dong_chi_tiet.ma_hop_dong = hop_dong.ma_hop_dong
+LEFT JOIN dich_vu_di_kem ON dich_vu_di_kem.ma_dich_vu_di_kem = hop_dong_chi_tiet.ma_dich_vu_di_kem
+WHERE YEAR(hop_dong.ngay_lam_hop_dong) = 2021 AND khach_hang.ma_loai_khach = 2
+GROUP BY  hop_dong.ma_hop_dong,khach_hang.ma_khach_hang
+HAVING SUM(COALESCE(hop_dong_chi_tiet.so_luong*dich_vu_di_kem.gia,0)+dich_vu.chi_phi_thue)> 10000000;
+set sql_safe_updates = 0;
+update khach_hang
+set khach_hang.ma_loai_khach = 1 where ma_khach_hang in (select*from view_tong_tien);
+set sql_safe_updates = 1;
+select khach_hang.ho_ten, loai_khach.ten_loai_khach 
+from khach_hang join loai_khach on khach_hang.ma_loai_khach = loai_khach.ma_loai_khach 
+where khach_hang.ma_khach_hang = 10;
 
-drop view if exists view_thu;
-create view view_thu as 
-select  view_tong_tien.ma_khach_hang
-from view_tong_tien
-group by view_tong_tien.ma_khach_hang
-having sum(tong_tien) > 1000000;
 
-DELIMITER //
-drop procedure if exists update_loai_khach//
-create procedure update_loai_khach()
+-- DELIMITER //
+-- drop procedure if exists update_loai_khach//
+-- create procedure update_loai_khach()
+-- begin
+-- 	set sql_safe_updates = 0;
+-- 	update khach_hang
+--     set khach_hang.ma_loai_khach = 1 where ma_khach_hang in (select*from view_tong_tien);
+-- 	set sql_safe_updates = 1;
+-- end;//
+-- DELIMITER ;
+ 
+
+#18 Xóa những khách hàng có hợp đồng trước năm 2021 (chú ý ràng buộc giữa các bảng).
+-- cách 1:
+drop view if exists view_khach_hang;
+create view view_khach_hang as
+SELECT  khach_hang.ma_khach_hang
+FROM khach_hang 
+LEFT JOIN hop_dong  ON khach_hang.ma_khach_hang = hop_dong.ma_khach_hang 
+where year(hop_dong.ngay_ket_thuc) <> 2021
+GROUP BY khach_hang.ma_khach_hang;
+
+DELIMITER // 
+drop procedure if exists delete_khach_hang//
+create procedure delete_khach_hang()
 begin
 	set sql_safe_updates = 0;
-	update khach_hang
-    set khach_hang.ma_loai_khach = 1 where ma_khach_hang in (select*from view_thu);
-	set sql_safe_updates = 1;
+	set foreign_key_checks=0;
+	delete from khach_hang 
+    where khach_hang.ma_khach_hang in  (select*from view_khach_hang);
+	set foreign_key_checks=1;
+    set sql_safe_updates = 1;
 end;//
 DELIMITER ;
 
-call update_loai_khach;
+call delete_khach_hang;
+
+select*from khach_hang;
+
+
+-- cách 2:
+ALTER TABLE hop_dong
+    DROP FOREIGN KEY fk_ma_khach_hang;
+ALTER TABLE hop_dong
+    ADD CONSTRAINT fk_ma_khach_hang FOREIGN KEY (ma_khach_hang) REFERENCES khach_hang (ma_khach_hang) ON DELETE SET NULL;
+delete khach_hang
+FROM khach_hang 
+JOIN hop_dong ON khach_hang.ma_khach_hang = hop_dong.ma_khach_hang 
+where year(hop_dong.ngay_ket_thuc) < 2021;
 
 
 
+#19	Cập nhật giá cho các dịch vụ đi kèm được sử dụng trên 10 lần trong năm 2020 lên gấp đôi.
+-- bước 1:
+DROP VIEW IF EXISTS view_dich_vu_chi_tiet;
+CREATE VIEW view_dich_vu_chi_tiet AS
+SELECT dich_vu_di_kem.ma_dich_vu_di_kem
+FROM hop_dong JOIN hop_dong_chi_tiet ON hop_dong.ma_hop_dong = hop_dong_chi_tiet.ma_hop_dong 
+JOIN dich_vu_di_kem ON hop_dong_chi_tiet.ma_dich_vu_di_kem = dich_vu_di_kem.ma_dich_vu_di_kem
+WHERE so_luong >= 10 AND YEAR(hop_dong.ngay_ket_thuc) = 2020
+GROUP BY dich_vu_di_kem.ma_dich_vu_di_kem; 
+-- bước 2:
+DELIMITER //
+DROP PROCEDURE IF EXISTS update_dich_vu_di_kem//
+CREATE PROCEDURE update_dich_vu_di_kem()
+BEGIN
+	SET sql_safe_updates = 0;
+	UPDATE dich_vu_di_kem
+    SET dich_vu_di_kem.gia = dich_vu_di_kem.gia*2 WHERE ma_dich_vu_di_kem IN (SELECT*FROM view_dich_vu_chi_tiet);
+	SET sql_safe_updates = 1;
+END;//
+DELIMITER ;
+-- bước 3:
+CALL  update_dich_vu_di_kem;
+-- bước 4:
+SELECT * FROM dich_vu_di_kem;
+
+#20 Hiển thị thông tin của tất cả các nhân viên và khách hàng có trong hệ thống, thông tin hiển thị bao gồm id (ma_nhan_vien, ma_khach_hang), ho_ten, email, so_dien_thoai, ngay_sinh, dia_chi.
+SELECT nhan_vien.ma_nhan_vien, nhan_vien.ho_ten, nhan_vien.email, nhan_vien.so_dien_thoai, nhan_vien.ngay_sinh, nhan_vien.dia_chi FROM nhan_vien
+UNION 
+SELECT khach_hang.ma_khach_hang, khach_hang.ho_ten, khach_hang.email, khach_hang.so_dien_thoai, khach_hang.ngay_sinh, khach_hang.dia_chi FROM khach_hang;
+
+#21
+#22
+#23 Tạo Stored Procedure sp_xoa_khach_hang dùng để xóa thông tin của một khách hàng nào đó với ma_khach_hang được truyền vào như là 1 tham số của sp_xoa_khach_hang.
+DELIMITER // 
+DROP PROCEDURE IF EXISTS delete_khach_hang_co_tham_so//
+CREATE PROCEDURE delete_khach_hang_co_tham_so(IN ma_khach_hang_muon_xoa INT)
+BEGIN
+	ALTER TABLE hop_dong
+    DROP FOREIGN KEY fk_ma_khach_hang;
+	ALTER TABLE hop_dong
+    ADD CONSTRAINT fk_ma_khach_hang FOREIGN KEY (ma_khach_hang) REFERENCES khach_hang (ma_khach_hang) ON DELETE SET NULL;
+	DELETE FROM khach_hang 
+    WHERE ma_khach_hang_muon_xoa = khach_hang.ma_khach_hang;
+END;//
+DELIMITER ;
+CALL delete_khach_hang_co_tham_so(4);
+SELECT * FROM khach_hang;
+-- #24	Tạo Stored Procedure sp_them_moi_hop_dong dùng để thêm mới vào bảng hop_dong với yêu cầu sp_them_moi_hop_dong phải thực hiện kiểm tra tính hợp lệ của dữ liệu bổ sung, với nguyên tắc không được trùng khóa chính và đảm bảo toàn vẹn tham chiếu đến các bảng liên quan.
+
+
+delimiter //
+DROP PROCEDURE IF EXISTS sp_them_moi_hop_dong//
+CREATE PROCEDURE sp_them_moi_hop_dong(IN ngay_lam_hop_dong_moi DATETIME, ngay_ket_thuc_moi DATETIME,
+                                      tien_dat_coc_moi DOUBLE,
+                                      ma_nhan_vien_moi INT, ma_khach_hang_moi INT, ma_dich_vu_moi INT)
+BEGIN
+    SET sql_safe_updates = 0;
+     IF (ngay_lam_hop_dong_moi <= ngay_ket_thuc_moi) THEN 
+    INSERT INTO hop_dong
+    (ngay_lam_hop_dong, ngay_ket_thuc, tien_dat_coc, ma_nhan_vien, ma_khach_hang, ma_dich_vu)
+        VALUE (ngay_lam_hop_dong_moi, ngay_ket_thuc_moi, tien_dat_coc_moi,
+               (SELECT ma_nhan_vien
+                FROM nhan_vien
+                WHERE ma_nhan_vien = ma_nhan_vien_moi),
+               (SELECT ma_khach_hang
+                FROM khach_hang
+                WHERE ma_khach_hang = ma_khach_hang_moi),
+               (SELECT ma_dich_vu
+                FROM dich_vu
+                WHERE ma_dich_vu = ma_dich_vu_moi)
+        );
+		ELSE 
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'ngày kết thúc phải lớn hơn hoặc bằng ngày làm hợp đồng';
+        END IF;
+    SET sql_safe_updates = 1;
+END //
+delimiter ;
+
+CALL  sp_them_moi_hop_dong('2022-03-13','2022-03-26',100000,2,8,5);
+CALL  sp_them_moi_hop_dong('2022-03-26','2022-03-7',100000,2,9,7);
+
+#25	Tạo Trigger có tên tr_xoa_hop_dong khi xóa bản ghi trong bảng hop_dong thì hiển thị tổng số lượng bản ghi còn lại có trong bảng hop_dong ra giao diện console của database.
+#Lưu ý: Đối với MySQL thì sử dụng SIGNAL hoặc ghi log thay cho việc ghi ở console.
+#bước 1:
+CREATE TABLE hien_thi_tong_record(
+	id int primary key auto_increment,
+	so_luong_record INT
+);
+#bước 2:
+drop trigger if exists dem_tong_record;
+delimiter // 
+CREATE TRIGGER dem_tong_record 
+AFTER DELETE 
+ON  hop_dong FOR EACH ROW 
+BEGIN 
+	declare tong_record int;
+    set tong_record =  (select count(*) from hop_dong);
+	insert into hien_thi_tong_record
+    set so_luong_record = tong_record;
+END //
+delimiter ;
+#bước 3:
+DELIMITER // 
+DROP PROCEDURE IF EXISTS xoa_hop_dong//
+CREATE PROCEDURE xoa_hop_dong(IN ma_hop_dong_muon_xoa INT)
+BEGIN
+	SET sql_safe_updates = 0;
+   	SET foreign_key_checks =0;
+	DELETE FROM hop_dong 
+    WHERE ma_hop_dong_muon_xoa = hop_dong.ma_hop_dong ;
+    SET sql_safe_updates = 1;
+	SET foreign_key_checks =1;
+END;//
+DELIMITER ;
+CALL xoa_hop_dong(3);
+#bước 4:
+SELECT*FROM hien_thi_tong_record;
+
+#26 ; Tạo Trigger có tên tr_cap_nhat_hop_dong khi cập nhật ngày kết thúc hợp đồng, 
+#cần kiểm tra xem thời gian cập nhật có phù hợp hay không, 
+#với quy tắc sau: Ngày kết thúc hợp đồng phải lớn hơn ngày làm hợp đồng ít nhất là 2 ngày. 
+#Nếu dữ liệu hợp lệ thì cho phép cập nhật, nếu dữ liệu không hợp lệ thì 
+#in ra thông báo “Ngày kết thúc hợp đồng phải lớn hơn ngày làm hợp đồng ít nhất là 2 ngày” trên console của database.
+
+DROP PROCEDURE IF EXISTS validate_them_moi_hop_dong;
+delimiter //
+CREATE PROCEDURE validate_hop_dong(IN ngay_lam DATE, ngay_dung DATE)
+DETERMINISTIC
+NO SQL
+BEGIN
+	IF (DATE(ngay_dung) - DATE(ngay_lam) < 2) THEN
+		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'ngày kết thúc phải lớn hơn ngày làm hợp đồng ít nhất 2 ngày';
+	END IF;
+end; //
+dEliMITeR ;
+
+DROP PROCEDURE IF EXISTS  hop_dong_insert;
+DELIMITER $$
+CREATE TRIGGER hop_dong_insert
+BEFORE INSERT ON hop_dong FOR EACH ROW
+BEGIN
+	CALL validate_hop_dong(NEW.ngay_lam_hop_dong, NEW.ngay_ket_thuc);
+END$$
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS  cap_nhat_hop_dong;
+DELIMITER $$
+CREATE TRIGGER cap_nhat_hop_dong 
+BEFORE UPDATE ON hop_dong FOR EACH ROW
+BEGIN
+	CALL validate_hop_dong(NEW.ngay_lam_hop_dong, NEW.ngay_ket_thuc);
+END$$
+DELIMITER ;
+
+delimiter //
+DROP PROCEDURE IF EXISTS sp_them_moi_hop_dong//
+CREATE PROCEDURE sp_them_moi_hop_dong(IN ngay_lam_hop_dong_moi DATETIME, ngay_ket_thuc_moi DATETIME,
+                                      tien_dat_coc_moi DOUBLE,
+                                      ma_nhan_vien_moi INT, ma_khach_hang_moi INT, ma_dich_vu_moi INT)
+BEGIN
+    SET sql_safe_updates = 0;
+     IF (ngay_lam_hop_dong_moi <= ngay_ket_thuc_moi) THEN 
+    INSERT INTO hop_dong
+    (ngay_lam_hop_dong, ngay_ket_thuc, tien_dat_coc, ma_nhan_vien, ma_khach_hang, ma_dich_vu)
+        VALUE (ngay_lam_hop_dong_moi, ngay_ket_thuc_moi, tien_dat_coc_moi,
+               (SELECT ma_nhan_vien
+                FROM nhan_vien
+                WHERE ma_nhan_vien = ma_nhan_vien_moi),
+               (SELECT ma_khach_hang
+                FROM khach_hang
+                WHERE ma_khach_hang = ma_khach_hang_moi),
+               (SELECT ma_dich_vu
+                FROM dich_vu
+                WHERE ma_dich_vu = ma_dich_vu_moi)
+        );
+        END IF;
+    SET sql_safe_updates = 1;
+END //
+delimiter ;
+
+CALL sp_them_moi_hop_dong('2022-03-13','2022-03-13',100000,2,8,5);
+
+#27	Tạo Function thực hiện yêu cầu sau:
+#a đếm số dịch vụ:
+DROP FUNCTION IF EXISTS func_dem_dich_vu;
+delimiter //
+CREATE FUNCTION func_dem_dich_vu()
+RETURNS INTEGER 
+READS SQL DATA
+DETERMINISTIC
+BEGIN 
+   DECLARE c INT;
+   SET c = (SELECT COUNT(*) FROM (SELECT dich_vu.ma_dich_vu, SUM(dich_vu.chi_phi_thue) 
+			FROM hop_dong RIGHT JOIN dich_vu ON hop_dong.ma_dich_vu = dich_vu.ma_dich_vu 
+			GROUP BY dich_vu.ma_dich_vu
+			HAVING SUM(dich_vu.chi_phi_thue) > 2000000) AS ten);
+	RETURN c;
+END //
+delimiter ;
+
+SELECT func_dem_dich_vu();
+#b tính hiệu ngày tháng:
+DROP FUNCTION IF EXISTS func_tinh_thoi_gian_hop_dong;
+delimiter // 
+CREATE FUNCTION func_tinh_thoi_gian_hop_dong(ma_khach_hang_nhap INT)
+RETURNS INTEGER 
+READS SQL DATA
+DETERMINISTIC
+BEGIN 
+	DECLARE c INT;
+    SET c = (SELECT MAX(DATE(ngay_ket_thuc) - DATE(ngay_lam_hop_dong)) FROM hop_dong 
+    WHERE (DATE(ngay_ket_thuc) - DATE(ngay_lam_hop_dong) >= (SELECT MAX(DATE(ngay_ket_thuc) - DATE(ngay_lam_hop_dong)) AS hieu_ngay_thang 
+    FROM hop_dong 
+    WHERE ma_khach_hang = ma_khach_hang_nhap
+	GROUP BY ma_khach_hang))AND ma_khach_hang = ma_khach_hang_nhap);
+    RETURN c;
+END//
+delimiter ;
+
+SELECT FUNC_TINH_THOI_GIAN_HOP_DONG(3);
+
+
+#28 Tạo Stored Procedure sp_xoa_dich_vu_va_hd_room để tìm các dịch vụ được thuê bởi khách hàng với loại dịch vụ là “Room” 
+#từ đầu năm 2015 đến hết năm 2019 để xóa thông tin của các dịch vụ đó (tức là xóa các bảng ghi trong bảng dich_vu) 
+#và xóa những hop_dong sử dụng dịch vụ liên quan
+#(tức là phải xóa những bản gi trong bảng hop_dong) và những bản liên quan khác.
+drop view if exists view_xoa_dich_vu;
+create view view_xoa_dich_vu as 
+select dich_vu.ma_dich_vu 
+from hop_dong left join dich_vu on hop_dong.ma_dich_vu = dich_vu.ma_dich_vu
+where dich_vu.ma_dich_vu in (3,6) and year(hop_dong.ngay_ket_thuc) < 2021
+group by dich_vu.ma_dich_vu;
+
+
+drop view if exists view_xoa_hop_dong;
+create view view_xoa_hop_dong as 
+select hop_dong.ma_hop_dong
+from hop_dong left join dich_vu on hop_dong.ma_dich_vu = dich_vu.ma_dich_vu
+where dich_vu.ma_dich_vu in (3,6) and year(hop_dong.ngay_ket_thuc) < 2021
+group by hop_dong.ma_hop_dong;
+
+DROP PROCEDURE IF EXISTS  sp_xoa_dich_vu_va_hd_room;
+delimiter // 
+create procedure sp_xoa_dich_vu_va_hd_room()
+begin
+    ALTER TABLE hop_dong
+    DROP FOREIGN KEY fk_dich_vu;
+	ALTER TABLE hop_dong
+    ADD CONSTRAINT fk_dich_vu FOREIGN KEY (ma_dich_vu) REFERENCES dich_vu (ma_dich_vu) ON DELETE SET NULL;
+    ALTER TABLE hop_dong
+    DROP FOREIGN KEY fk_ma_khach_hang;
+	ALTER TABLE hop_dong
+    ADD CONSTRAINT fk_ma_khach_hang FOREIGN KEY (ma_khach_hang) REFERENCES khach_hang (ma_khach_hang) ON DELETE SET NULL;
+    ALTER TABLE hop_dong
+    DROP FOREIGN KEY fk_ma_nhan_vien;
+	ALTER TABLE hop_dong
+    ADD CONSTRAINT fk_ma_nhan_vien FOREIGN KEY (ma_nhan_vien) REFERENCES nhan_vien (ma_nhan_vien) ON DELETE SET NULL;
+    ALTER TABLE hop_dong_chi_tiet
+    DROP FOREIGN KEY fk_ma_hop_dong;
+	ALTER TABLE hop_dong_chi_tiet
+    ADD CONSTRAINT fk_ma_hop_dong FOREIGN KEY (ma_hop_dong) REFERENCES hop_dong (ma_hop_dong) ON DELETE SET NULL;
+	delete from hop_dong 
+    where hop_dong.ma_hop_dong in (select*from view_xoa_hop_dong);
+    delete from dich_vu 
+    where dich_vu.ma_dich_vu in  (select*from view_xoa_dich_vu);
+end //
+delimiter ;
+
+call sp_xoa_dich_vu_va_hd_room;
+
+
+
+
+    
