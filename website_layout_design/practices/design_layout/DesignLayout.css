@@ -1,0 +1,26 @@
+body{
+    margin: 0;
+}
+#\#header{
+    background: red;
+    height: 100px;
+    width: 100%;
+ }
+#main{
+    background: bisque;
+    height: 300px;
+    width: 70%;
+    float: left;
+}
+#slide3{
+    background: darkslateblue;
+    height: 300px;
+    width: 30%;
+    float: left;
+}
+#f3{
+    background: black;
+    height: 100px;
+    width: 100%;
+    clear: both;
+}

@@ -1,0 +1,164 @@
+.col-1 {width: 8.33%;}
+.col-2 {width: 16.66%;}
+.col-3 {width: 25%;}
+.col-4 {width: 33.33%;}
+.col-5 {width: 41.66%;}
+.col-6 {width: 50%;}
+.col-7 {width: 58.33%;}
+.col-8 {width: 66.66%;}
+.col-9 {width: 75%;}
+.col-10 {width: 83.33%;}
+.col-11 {width: 91.66%;}
+.col-12 {width: 100%;}
+.row{
+    display: flex;
+}
+body{
+    font-size: 12px;
+    box-sizing: border-box;
+}
+.main{
+    height: 500px;
+}
+.header{
+    height:80px;
+    background: black;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 3px;
+    border-radius: 10px;
+    padding-left: 10px;
+}
+.left-sidebar{
+    height: 100%;
+    background: gainsboro;
+    border-radius: 10px;
+    margin: 3px;
+}
+.right-sidebar{
+    height: 100%;
+    background: gainsboro;
+    border-radius: 10px;
+    margin: 3px;
+    position: relative;
+}
+.main-content{
+    height: 100%;
+    background: #efefef;
+    border-radius: 10px;
+    margin: 3px;
+}
+.footer{
+    height: 100px;
+    background: rgba(128, 128, 128, 0.8);
+    clear: both;
+    border: #9a9a9a solid 1px;
+    border-radius: 10px;
+    margin: 3px;
+}
+.logo{
+    width:100px;
+    height: 50px;
+    display: flex;
+    text-decoration:none;
+    text-align: center;
+    line-height: 30px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    font-size: x-large;
+}
+.header-left{
+    display: flex;
+    align-items: center;
+    justify-content: left;
+}
+
+.header  a{
+    width:100px;
+    height: 50px;
+    display: flex;
+    text-decoration:none;
+    text-align: center;
+    line-height: 30px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    font-size: x-large;
+}
+.header a:hover{
+    color: blue;
+    height: 80px;
+}
+.login{
+    color: white;
+}
+.login img{
+    width: 45px;
+    height: 45px;
+    margin-right: 10px;
+    border-radius: 50%;
+}
+.welcome{
+    width: 90%;
+    height: 50%;
+    font-style: italic;
+    text-align: justify;
+    margin-left: 5%;
+}
+.welcome h1{
+    font-size: 50px;
+   margin: 0 10px 0 10px;
+}
+.welcome p{
+    display: flex;
+    font-size: 20px;
+    margin: 5px 10px 0 10px;
+    justify-content: center;
+    align-items: center;
+}
+.test {
+    height: 50%;
+    font-style: italic;
+    text-align: justify;
+    font-size: 50px;
+    width: 90%;
+}
+.test h2{
+    margin: 0 0 0 5% ;
+}
+hr{
+    width: 90%;
+}
+.box1{
+    width: 80%;
+    height: 25%;
+    border: 2px solid white;
+    border-radius: 10px;
+    background: blanchedalmond;
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    display: flex;
+    justify-content: center;
+}
+.box1 p{
+    position: absolute;
+    top: 30%;
+}
+.box2{
+    width: 80%;
+    height: 25%;
+    border: 2px solid white;
+    border-radius: 10px;
+    background: blanchedalmond;
+    position: absolute;
+    top: 45%;
+    left: 10%;
+    display: flex;
+    justify-content: center;
+}
+.box2 p{
+    position: absolute;
+    top: 30%;
+}
+

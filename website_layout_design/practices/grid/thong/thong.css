@@ -1,0 +1,41 @@
+body {
+    margin: 0;
+}
+#header {
+    background-color: #135ae7;
+    height: 65px;
+    width: 100%;
+}
+#anh-dai-dien {
+    background-image: url("https://scontent.fdad3-4.fna.fbcdn.net/v/t39.30808-6/277767309_2668536089958037_6502618463427567972_n.jpg?_nc_cat=110&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=9mJXbsujImkAX8fot8f&_nc_ht=scontent.fdad3-4.fna&oh=00_AT9XBFC7Hvat7E7QYygOYehe2qO92fTk_nziBLr3Rp0NTw&oe=625433CF");
+    width: 45px;
+    height: 45px;
+    background-size: 100%;
+    border: solid white;
+    border-radius: 50%;
+    position: relative;
+    margin-left: 75%;
+    top: 7px;
+}
+
+#dau_cham-xanh {
+    background-color: #0be30b;
+    width: 15px;
+    height: 15px;
+    border: solid black;
+    border-width: 0.5px;
+    border-radius: 50%;
+    position: absolute;
+    margin-left: 65%;
+    margin-top: 60%;
+}
+#lo_go {
+    background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Facebook_Logo_%282019%29.png/900px-Facebook_Logo_%282019%29.png");
+    width: 60px;
+    height: 60px;
+    background-size: 100%;
+    border: solid white;
+    border-radius: 50%;
+    position: relative;
+    top: 7px;
+}
