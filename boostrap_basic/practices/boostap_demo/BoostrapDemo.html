@@ -9,29 +9,32 @@
     <script src="js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </head>
 <body>
-<div class="alert alert-primary" role="alert">
-    A simple primary alert—check it out!
-</div>
-<div class="alert alert-secondary" role="alert">
-    A simple secondary alert—check it out!
-</div>
-<div class="alert alert-success" role="alert">
-    A simple success alert—check it out!
-</div>
-<div class="alert alert-danger" role="alert">
-    A simple danger alert—check it out!
-</div>
-<div class="alert alert-warning" role="alert">
-    A simple warning alert—check it out!
-</div>
-<div class="alert alert-info" role="alert">
-    A simple info alert—check it out!
-</div>
-<div class="alert alert-light" role="alert">
-    A simple light alert—check it out!
-</div>
-<div class="alert alert-dark" role="alert">
-    A simple dark alert—check it out!
-</div>
+<form class="row" role="form">
+    <div class="form-group">
+        <label for="firstname" class="col-md-2 col-form-label">First Name</label>
+        <div class="col-md-10">
+            <input type="text" class="form-control" id="firstname" placeholder="Enter First Name">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="lastname" class="col-md-2 col-form-label">Last Name</label>
+        <div class="col-md-10">
+            <input type="text" class="form-control" id="lastname" placeholder="Enter Last Name">
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="offset-sm-2 col-md-10">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox">Remember me</label>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="offset-sm-2 col-md-10">
+            <button type="submit" class="btn btn-secondary">Sign in</button>
+        </div>
+    </div>
+</form>
 </body>
 </html>
