@@ -12,8 +12,10 @@ public class ProductDiscountCalculationServlet extends HttpServlet {
         double price = Double.parseDouble(request.getParameter("price"));
         double discount = Double.parseDouble(request.getParameter("discount"));
         double amount = price*discount*0.01;
+        double finalPrice = price-amount;
         request.setAttribute("product_description", description);
         request.setAttribute("amount", amount);
+        request.setAttribute("final_price", finalPrice);
         request.getRequestDispatcher("/result_final.jsp").forward(request,response);
     }
 

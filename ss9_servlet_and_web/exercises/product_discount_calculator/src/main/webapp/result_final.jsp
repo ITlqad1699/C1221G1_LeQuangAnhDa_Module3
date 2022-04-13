@@ -14,5 +14,7 @@
 <h2>Product description: ${product_description}</h2>
 <br>
 <h2>Amount: ${amount}</h2>
+<br>
+<h2>Final Price: ${final_price}</h2>
 </body>
 </html>
