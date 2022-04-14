@@ -19,9 +19,11 @@
 <body>
 <h1>Create new customer</h1>
 <p>
+<p>
     <c:if test='${requestScope["message"] != null}'>
         <span class="message">${requestScope["message"]}</span>
     </c:if>
+</p>
 </p>
 <p>
     <a href="/customers">Back to customer list</a>

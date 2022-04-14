@@ -20,6 +20,7 @@ public class CustomerServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
         String action = request.getParameter("action");
         if (action == null) {
             action = "";
@@ -90,7 +91,7 @@ public class CustomerServlet extends HttpServlet {
         Customer customer = new Customer(id, name, email, address);
         this.customerService.save(customer);
         RequestDispatcher dispatcher = request.getRequestDispatcher("customer/create.jsp");
-        request.setAttribute("message", "New customer was created");
+        request.setAttribute("message", "customer was created");
         try {
             dispatcher.forward(request, response);
         } catch (ServletException e) {

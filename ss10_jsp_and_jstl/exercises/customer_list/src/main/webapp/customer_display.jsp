@@ -1,4 +1,3 @@
-
 <%--
   Created by IntelliJ IDEA.
   User: lqad1
@@ -65,8 +64,8 @@
                     </c:otherwise>
                 </c:choose>
             </td>
-<%--            <c:set var="gender" value="${list_customer.gender}"/>--%>
-<%--            <td><c:out value="${gender eq true ? 'Nam': 'Nu'}"/></td>--%>
+                <%--            <c:set var="gender" value="${list_customer.gender}"/>--%>
+                <%--            <td><c:out value="${gender eq true ? 'Nam': 'Nu'}"/></td>--%>
             <td>
                 <c:choose>
                     <c:when test="${item.score >= 8}">

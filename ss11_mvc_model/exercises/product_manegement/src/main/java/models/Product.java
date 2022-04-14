@@ -1,14 +1,11 @@
 package models;
 
 public class Product {
-    private Integer id;
+    private int id;
     private String name;
-    private Double price;
+    private double price;
     private String description;
     private String producer;
-
-    public Product() {
-    }
 
     public Product(int id, String name, double price, String description, String producer) {
         this.id = id;
