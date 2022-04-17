@@ -505,6 +505,7 @@ begin
 end //
 delimiter ;
 
+set sql_safe_updates = 0;
 call sp_xoa_dich_vu_va_hd_room;
 
 
