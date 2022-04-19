@@ -10,7 +10,8 @@
 <html>
 <head>
     <title>$Title$</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+<%--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">--%>
+    <link rel="stylesheet" href="/bootstrap46/css/bootstrap.min.css">
 </head>
 <body>
 <center>
@@ -18,7 +19,7 @@
         <h1>User Management</h1>
         <%-- Back to menu --%>
         <a href="/users">
-            <button type="button" class="btn btn-light">Back to List</button>
+            <button type="button" class="btn btn-light">Home</button>
         </a>
         <%-- SEARCH --%>
         <form action="/users" method="get">
@@ -28,7 +29,7 @@
             <button class="btn btn-primary" type="submit">Search</button>
         </form>
         <%-- Create New --%>
-        <a href="/users?action=create">
+        <a href="/users?action1=create">
             <button type="button" class="btn btn-primary">Create New</button>
         </a>
         <%-- Show List --%>
@@ -101,9 +102,12 @@
             </div>
         </div>
 </center>
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+<%--<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>--%>
+<%--<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>--%>
+<%--<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>--%>
+<script src="/bootstrap46/js/bootstrap.min.js"></script>
+<script src="/bootstrap46/js/bootstrap.bundle.js"></script>
+<script src="/bootstrap46/js/bootstrap.js"></script>
 </body>
 </html>
 <script>

@@ -44,7 +44,7 @@ public class UserServlet extends HttpServlet {
     }
 
     private void deleteUser(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
+        int id = Integer.parseInt(request.getParameter("idid"));
         User user = userService.selectUser(id);
         userService.deleteUser(id);
         List<User> users = userService.selectAllUser();

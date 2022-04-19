@@ -21,7 +21,7 @@
 </center>
 <div align="center">
     <form method="post">
-        <table border="1" cellpadding="5">
+        <table border="1" cellpadding="5" class="table table-light">
             <caption>
                 <h2>
                     Edit User

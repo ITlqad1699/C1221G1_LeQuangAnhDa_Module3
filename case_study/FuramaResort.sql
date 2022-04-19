@@ -84,7 +84,7 @@ CONSTRAINT fk_ma_loai_khach FOREIGN KEY (ma_loai_khach)
  mo_ta_tien_nghi_khac VARCHAR(45),
  dien_tich_ho_boi DOUBLE,
  so_tang INT,
-ma_kieu_thue INT,
+ ma_kieu_thue INT,
  ma_loai_dich_vu INT,
  CONSTRAINT fk_ma_kieu_thue FOREIGN KEY( ma_kieu_thue) 
 		REFERENCES kieu_thue(ma_kieu_thue),

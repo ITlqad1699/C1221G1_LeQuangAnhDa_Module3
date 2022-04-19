@@ -11,19 +11,19 @@
 <head>
     <title>Create New User</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
-    <style>
-        input {
-            border-radius: 5px;
-        }
+<%--    <style>--%>
+<%--        input {--%>
+<%--            border-radius: 5px;--%>
+<%--        }--%>
 
-        div {
-            width: 300px;
-        }
+<%--        div {--%>
+<%--            width: 300px;--%>
+<%--        }--%>
 
-        table {
-            border-radius: 10px;
-        }
-    </style>
+<%--        table {--%>
+<%--            border-radius: 10px;--%>
+<%--        }--%>
+<%--    </style>--%>
 </head>
 <body>
 <center>
