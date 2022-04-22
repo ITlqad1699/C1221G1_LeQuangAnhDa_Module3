@@ -65,39 +65,29 @@ public class EmployeeServlet extends HttpServlet {
         Integer id = Integer.valueOf(request.getParameter("id"));
         String name = request.getParameter("name");
         String birthDay = request.getParameter("birthDay");
-        Integer citizenId = null;
-        try {
-            citizenId = Integer.valueOf(request.getParameter("citizenId"));
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        }
-        Double salary = null;
+        String citizenId = request.getParameter("citizenId");
+        Double salary = -1.0;
         try {
             salary = Double.valueOf(request.getParameter("salary"));
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-        Integer numberPhone = null;
-        try {
-            numberPhone = Integer.valueOf(request.getParameter("numberPhone"));
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        }
+        String numberPhone = request.getParameter("numberPhone");
         String email = request.getParameter("email");
         String address = request.getParameter("address");
-        Integer positionlId = null;
+        Integer positionlId = -1;
         try {
             positionlId = Integer.valueOf(request.getParameter("positions"));
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-        Integer levelId = null;
+        Integer levelId = -1;
         try {
             levelId = Integer.valueOf(request.getParameter("levels"));
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-        Integer devisionId = null;
+        Integer devisionId = -1;
         try{
             devisionId =  Integer.valueOf(request.getParameter("devisions"));
         } catch (NumberFormatException e) {
@@ -110,6 +100,12 @@ public class EmployeeServlet extends HttpServlet {
             if (map.isEmpty()) {
                 response.sendRedirect("/employee");
             } else {
+                List<Level> levels = ilevelService.getLevel();
+                List<Position> positions = iPositionService.getPosition();
+                List<Devision> devisions = iDevisionService.getDevision();
+                request.setAttribute("levels", levels);
+                request.setAttribute("positions", positions);
+                request.setAttribute("devisions", devisions);
                 request.setAttribute("erro", map);
                 request.getRequestDispatcher("view_furama_resort/employee/edit.jsp").forward(request, response);
             }
@@ -126,39 +122,29 @@ public class EmployeeServlet extends HttpServlet {
         Integer id = null;
         String name = request.getParameter("name");
         String birthDay = request.getParameter("birthDay");
-        Integer citizenId = null;
-        try {
-            citizenId = Integer.valueOf(request.getParameter("citizenId"));
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        }
-        Double salary = null;
+        String citizenId = request.getParameter("citizenId");
+        Double salary = -1.0;
         try {
             salary = Double.valueOf(request.getParameter("salary"));
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-        Integer numberPhone = null;
-        try {
-            numberPhone = Integer.valueOf(request.getParameter("numberPhone"));
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        }
+        String numberPhone = request.getParameter("numberPhone");
         String email = request.getParameter("email");
         String address = request.getParameter("address");
-        Integer positionlId = null;
+        Integer positionlId = -1;
         try {
             positionlId = Integer.valueOf(request.getParameter("positions"));
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-        Integer levelId = null;
+        Integer levelId = -1;
         try {
            levelId = Integer.valueOf(request.getParameter("levels"));
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-        Integer devisionId = null;
+        Integer devisionId = -1;
         try{
             devisionId =  Integer.valueOf(request.getParameter("devisions"));
         } catch (NumberFormatException e) {
@@ -169,6 +155,12 @@ public class EmployeeServlet extends HttpServlet {
         if (mapCreate.isEmpty()) {
             response.sendRedirect("/employee");
         } else {
+            List<Level> levels = ilevelService.getLevel();
+            List<Position> positions = iPositionService.getPosition();
+            List<Devision> devisions = iDevisionService.getDevision();
+            request.setAttribute("levels", levels);
+            request.setAttribute("positions", positions);
+            request.setAttribute("devisions", devisions);
             request.setAttribute("erro", mapCreate);
             request.getRequestDispatcher("view_furama_resort/employee/create.jsp").forward(request, response);
         }

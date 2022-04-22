@@ -15,7 +15,7 @@
 </head>
 <body>
 
-<div class="container border" style="width: 100%">
+<div class="container border col-12" style="width: 100%">
     <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4  bg-white border-bottom box-shadow my-0 "
          style="background: #046056;">
         <h5 class="my-0 mr-md-auto font-weight-normal"><img
@@ -49,7 +49,6 @@
             </form>
         </div>
     </nav>
-</div>
     <%-- Create New --%>
     <a href="/service?action=create">
         <button type="button" class="btn btn-primary">Create New</button>
@@ -60,6 +59,7 @@
             <thead class="thead-dark">
             <tr>
                 <th class="col-1">ID</th>
+                <th class="col-1">Service Code</th>
                 <th class="col-1">Name</th>
                 <th class="col-1">area</th>
                 <th>cost</th>
@@ -78,6 +78,7 @@
                 <tr>
                     <td><c:out value="${service.serviceId}"/></td>
                     <td><c:out value="${service.name}"/></td>
+                    <td><c:out value="${service.serviceCode}"/></td>
                     <td><c:out value="${service.area}"/></td>
                     <td><c:out value="${service.cost}"/></td>
                     <td><c:out value="${service.maxPeople}"/></td>
@@ -92,7 +93,6 @@
                             </c:if>
                         </c:forEach>
                     </td>
-<%--                    <td><c:out value="${service.serviceTypeId}"/></td>--%>
                     <td class="col-1">
                         <c:forEach items="${serviceTypes}" var="serviceTypes" >
                             <c:if test="${serviceTypes.serviceTypeId eq service.serviceTypeId}">
@@ -110,6 +110,7 @@
                                 data-toggle="modal" data-target="#exampleModalCenter"
                                 onclick="infoDelete(
                                     <c:out value='${service.serviceId}'/>,
+                                    <c:out value='${service.serviceCode}'/>,
                                     <c:out value='\"${service.name}\"'/>,
                                     <c:out value='\"${service.area}\"'/>,
                                     <c:out value='\"${service.cost}\"'/>,
@@ -143,6 +144,7 @@
                         <div class="modal-body">
                             <input type="hidden" name="action" value="delete">
                             <input type="hidden" id="id_delete" name="id">
+                            <div id="serviceCode_delete"></div>
                             <div id="name_delete"></div>
                             <div id="area_delete"></div>
                             <div id="maxPeople_delele"></div>
@@ -155,6 +157,7 @@
                 </div>
             </div>
         </div>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
@@ -165,6 +168,7 @@
 <script>
     function infoDelete(serviceId, name, area, cost, maxPeople, roomStandard, other, swimmingPoolArea, floorNum, rentalTypeId,serviceTypeId) {
         document.getElementById("id_delete").value = serviceId;
+        document.getElementById("serviceCode_delete").innerText = "serviceCode: " + name;
         document.getElementById("name_delete").innerText = "Name: " + name;
         document.getElementById("area_delete").innerText = "area " + area;
         document.getElementById("cost_delete").innerText = "cost: " + cost;

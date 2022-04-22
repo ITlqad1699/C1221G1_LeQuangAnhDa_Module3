@@ -6,7 +6,6 @@ import service.ICustomerService;
 import service.iget_type.ICustomerTypeService;
 import service.impl.customer_impl.CustomerService;
 import service.impl.customer_impl.CustomerTypeService;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -53,12 +52,22 @@ public class CustomerServlet extends HttpServlet {
     private void editCustomer(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, SQLException {
         String name = request.getParameter("name");
         String birthDay = request.getParameter("birthDay");
-        Integer gender = Integer.valueOf(request.getParameter("gender"));
-        Integer citizenId = Integer.valueOf(request.getParameter("citizenId"));
-        Integer numberPhone = Integer.valueOf(request.getParameter("numberPhone"));
+        Integer gender = -1;
+        Integer customerTypeId = -1;
+        try{
+            gender = Integer.valueOf(request.getParameter("gender"));
+        } catch (NumberFormatException e){
+            e.printStackTrace();
+        }
+        String  numberPhone = request.getParameter("numberPhone");
+        String  citizenId = request.getParameter("citizenId");
+        try{
+            customerTypeId = Integer.valueOf(request.getParameter("customerTypeId"));
+        }catch (NumberFormatException e){
+            e.printStackTrace();
+        }
         String email = request.getParameter("email");
         String address = request.getParameter("address");
-        Integer customerTypeId = Integer.valueOf(request.getParameter("customerTypeId"));
         int id = Integer.parseInt(request.getParameter("id"));
         String customerCode = request.getParameter("customerCode");
         Customer customer = new Customer(id,name,birthDay,gender,citizenId,numberPhone,email,address,customerTypeId,customerCode);
@@ -68,6 +77,8 @@ public class CustomerServlet extends HttpServlet {
             if (map.isEmpty()) {
                 response.sendRedirect("/customer");
             } else {
+                List<CustomerType> customerTypes = iCustomerTypeService.getCustomerType();
+                request.setAttribute("customerType", customerTypes);
                 request.setAttribute("erro", map);
                 request.getRequestDispatcher("view_furama_resort/customer/edit.jsp").forward(request, response);
             }
@@ -83,12 +94,24 @@ public class CustomerServlet extends HttpServlet {
     private void createNewCustomer(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String name = request.getParameter("name");
         String birthDay = request.getParameter("birthDay");
-        Integer gender = Integer.valueOf(request.getParameter("gender"));
-        Integer citizenId = Integer.valueOf(request.getParameter("citizenId"));
-        Integer numberPhone = Integer.valueOf(request.getParameter("numberPhone"));
+        System.out.println(birthDay);
+        Integer gender = -1;
+        Integer customerTypeId = -1;
+        String  numberPhone = request.getParameter("numberPhone");
+        String  citizenId = request.getParameter("citizenId");
+        try{
+            gender = Integer.valueOf(request.getParameter("gender"));
+        } catch (NumberFormatException e){
+            e.printStackTrace();
+        }
+
+        try{
+            customerTypeId = Integer.valueOf(request.getParameter("customerTypeId"));
+        }catch (NumberFormatException e){
+            e.printStackTrace();
+        }
         String email = request.getParameter("email");
         String address = request.getParameter("address");
-        Integer customerTypeId = Integer.valueOf(request.getParameter("customerTypeId"));
         Integer id = null;
         String customerCode = request.getParameter("customerCode");
         Customer customer = new Customer(id, name, birthDay, gender, citizenId, numberPhone, email, address, customerTypeId,customerCode);
@@ -96,6 +119,8 @@ public class CustomerServlet extends HttpServlet {
         if (mapCreate.isEmpty()) {
             response.sendRedirect("/customer");
         } else {
+            List<CustomerType> customerTypes = iCustomerTypeService.getCustomerType();
+            request.setAttribute("customerType", customerTypes);
             request.setAttribute("erro", mapCreate);
             request.getRequestDispatcher("view_furama_resort/customer/create.jsp").forward(request, response);
         }

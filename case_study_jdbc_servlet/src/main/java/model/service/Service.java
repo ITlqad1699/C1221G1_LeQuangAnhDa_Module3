@@ -2,6 +2,7 @@ package model.service;
 
 public class Service {
     private Integer serviceId;
+    private String serviceCode;
     private String name;
     private Double area;
     private Double cost;
@@ -13,11 +14,13 @@ public class Service {
     private Integer rentalTypeId;
     private Integer serviceTypeId;
 
+
     public Service() {
     }
 
-    public Service(Integer serviceId, String name, Double area, Double cost, Integer maxPeople, String roomStandard, String other, Double swimmingPoolArea, Integer floorNum, Integer rentalTypeId, Integer serviceTypeId) {
+    public Service(Integer serviceId, String serviceCode, String name, Double area, Double cost, Integer maxPeople, String roomStandard, String other, Double swimmingPoolArea, Integer floorNum, Integer rentalTypeId, Integer serviceTypeId) {
         this.serviceId = serviceId;
+        this.serviceCode = serviceCode;
         this.name = name;
         this.area = area;
         this.cost = cost;
@@ -28,6 +31,14 @@ public class Service {
         this.floorNum = floorNum;
         this.rentalTypeId = rentalTypeId;
         this.serviceTypeId = serviceTypeId;
+    }
+
+    public String getServiceCode() {
+        return serviceCode;
+    }
+
+    public void setServiceCode(String serviceCode) {
+        this.serviceCode = serviceCode;
     }
 
     public Integer getServiceId() {

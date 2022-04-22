@@ -32,9 +32,9 @@ public class EmployeerRepository implements IEmployeeRepository {
                 employee.setId(resultSet.getInt("ma_nhan_vien"));
                 employee.setName(resultSet.getString("ho_ten"));
                 employee.setBirthDay(resultSet.getString("ngay_sinh"));
-                employee.setCitizenId(resultSet.getInt("so_cmnd"));
+                employee.setCitizenId(resultSet.getString("so_cmnd"));
                 employee.setSalary(resultSet.getDouble("luong"));
-                employee.setNumberPhone(resultSet.getInt("so_dien_thoai"));
+                employee.setNumberPhone(resultSet.getString("so_dien_thoai"));
                 employee.setEmail(resultSet.getString("email"));
                 employee.setAddress(resultSet.getString("dia_chi"));
                 employee.setPositionlId(resultSet.getInt("ma_vi_tri"));
@@ -61,9 +61,9 @@ public class EmployeerRepository implements IEmployeeRepository {
             preparedStatement = baseRepository.getConnection().prepareStatement(INSERT_INTO_EMPLOYEE);
             preparedStatement.setString(1,employee.getName());
             preparedStatement.setString(2,employee.getBirthDay());
-            preparedStatement.setInt(3,employee.getCitizenId());
+            preparedStatement.setString(3,employee.getCitizenId());
             preparedStatement.setDouble(4,employee.getSalary());
-            preparedStatement.setInt(5,employee.getNumberPhone());
+            preparedStatement.setString(5,employee.getNumberPhone());
             preparedStatement.setString(6,employee.getEmail());
             preparedStatement.setString(7,employee.getAddress());
             preparedStatement.setInt(8,employee.getPositionlId());
@@ -94,9 +94,9 @@ public class EmployeerRepository implements IEmployeeRepository {
                 employee.setId(id);
                 employee.setName(resultSet.getString("ho_ten"));
                 employee.setBirthDay(resultSet.getString("ngay_sinh"));
-                employee.setCitizenId(resultSet.getInt("so_cmnd"));
+                employee.setCitizenId(resultSet.getString("so_cmnd"));
                 employee.setSalary(resultSet.getDouble("luong"));
-                employee.setNumberPhone(resultSet.getInt("so_dien_thoai"));
+                employee.setNumberPhone(resultSet.getString("so_dien_thoai"));
                 employee.setEmail(resultSet.getString("email"));
                 employee.setAddress(resultSet.getString("dia_chi"));
                 employee.setPositionlId(resultSet.getInt("ma_vi_tri"));
@@ -136,9 +136,9 @@ public class EmployeerRepository implements IEmployeeRepository {
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_EMPLOYEE_SQL);) {
             preparedStatement.setString(1,employee.getName());
             preparedStatement.setString(2,employee.getBirthDay());
-            preparedStatement.setInt(3,employee.getCitizenId());
+            preparedStatement.setString(3,employee.getCitizenId());
             preparedStatement.setDouble(4,employee.getSalary());
-            preparedStatement.setInt(5,employee.getNumberPhone());
+            preparedStatement.setString(5,employee.getNumberPhone());
             preparedStatement.setString(6,employee.getEmail());
             preparedStatement.setString(7,employee.getAddress());
             preparedStatement.setInt(8,employee.getPositionlId());
@@ -147,6 +147,7 @@ public class EmployeerRepository implements IEmployeeRepository {
             preparedStatement.setInt(11,employee.getId());
             preparedStatement.executeUpdate();
         }
+
     }
 
     @Override
@@ -165,9 +166,9 @@ public class EmployeerRepository implements IEmployeeRepository {
                 employee.setId(resultSet.getInt("ma_nhan_vien"));
                 employee.setName(resultSet.getString("ho_ten"));
                 employee.setBirthDay(resultSet.getString("ngay_sinh"));
-                employee.setCitizenId(resultSet.getInt("so_cmnd"));
+                employee.setCitizenId(resultSet.getString("so_cmnd"));
                 employee.setSalary(resultSet.getDouble("luong"));
-                employee.setNumberPhone(resultSet.getInt("so_dien_thoai"));
+                employee.setNumberPhone(resultSet.getString("so_dien_thoai"));
                 employee.setEmail(resultSet.getString("email"));
                 employee.setAddress(resultSet.getString("dia_chi"));
                 employee.setPositionlId(resultSet.getInt("ma_vi_tri"));
@@ -177,6 +178,12 @@ public class EmployeerRepository implements IEmployeeRepository {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                preparedStatement.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
         }
         return employees;
     }

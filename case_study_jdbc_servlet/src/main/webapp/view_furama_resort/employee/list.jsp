@@ -17,7 +17,7 @@
 </head>
 <body>
 
-<div class="container border" style="width: 100%">
+<div class="container border col-12" style="width: 100%">
     <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4  bg-white border-bottom box-shadow my-0 "
          style="background: #046056;">
         <h5 class="my-0 mr-md-auto font-weight-normal"><img
@@ -51,125 +51,129 @@
             </form>
         </div>
     </nav>
-</div>
-<div align="center">
-    <div class="display-flex">
-        <form class="form-inline my-2 my-lg-0 d-inline" action="/employee" method="get" >
-            <input type="hidden" name="action" value="search">
-            <input class="form-control mr-sm-2"  aria-label="Search" placeholder="name" type="text" name="search_name">
-            <input class="form-control mr-sm-2"  aria-label="Search" placeholder="citizen id" type="text" name="search_citizen_id">
-            <input class="form-control mr-sm-2"  aria-label="Search" placeholder="phone number" type="text" name="search_phone_numder">
-            <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
-        <a href="/employee?action=create" class="d-inline">
-            <button type="button" class="btn btn-primary">Create New</button>
-        </a>
-    </div>
-    <caption><h2>List of Employees</h2></caption>
-    <table class="table table-striped " id="tableCustomer">
-        <thead class="thead-dark">
-        <tr>
-            <th class="col-1">id</th>
-            <th class="col-1">Name</th>
-            <th class="col-1">Day of birth</th>
-            <th>CitizenId</th>
-            <th>Salary</th>
-            <th>NumberPhone</th>
-            <th>Email</th>
-            <th class="col-1">Address</th>
-            <th class="col-1">Position</th>
-            <th class="col-1">Level</th>
-            <th class="col-1">Devision</th>
-            <th>Action</th>
-        </tr>
-        </thead>
-        <tbody>
-        <c:forEach var="employees" items="${employees}">
-            <tr>
-                <td><c:out value="${employees.id}"/></td>
-                <td><c:out value="${employees.name}"/></td>
-                <td><c:out value="${employees.birthDay}"/></td>
-                <td><c:out value="${employees.citizenId}"/></td>
-                <td><fmt:formatNumber value="${employees.salary}" type="number"/></td>
-                <td><c:out value="${employees.numberPhone}"/></td>
-                <td><c:out value="${employees.email}"/></td>
-                <td><c:out value="${employees.address}"/></td>
-                <td class="col-1">
-                   <c:forEach items="${positions}" var="positions">
-                       <c:if test="${positions.positionlId eq employees.positionlId}">
-                           ${positions.position}
-                       </c:if>
-                   </c:forEach>
-                </td>
-                <td class="col-1">
-                    <c:forEach items="${levels}" var="levels">
-                        <c:if test="${levels.levelId eq employees.levelId}">
-                            ${levels.level}
-                        </c:if>
-                    </c:forEach>
-                </td>
-                <td class="col-1">
-                   <c:forEach items="${devisions}" var="devisions">
-                       <c:if test="${devisions.devisionId eq employees.devisionId}">
-                           ${devisions.devision}
-                       </c:if>
-                   </c:forEach>
-                </td>
-                <td style="border: none">
-                    <a href="/employee?action=edit&id=${employees.id}">
-                        <button type="button" class="btn btn-primary">
-                            Edit
-                        </button>
-                    </a>
-                    <button type="button" class="btn btn-danger"
-                            data-toggle="modal" data-target="#exampleModalCenter"
-                            onclick="infoDelete(
-                                <c:out value='${employees.id}'/>,
-                                <c:out value='\"${employees.name}\"'/>,
-                                <c:out value='\"${employees.birthDay}\"'/>,
-                                <c:out value='\"${employees.citizenId}\"'/>,
-                                <c:out value='\"${employees.salary}\"'/>,
-                                <c:out value='\"${employees.numberPhone}\"'/>,
-                                <c:out value='\"${employees.email}\"'/>,
-                                <c:out value='\"${employees.address}\"'/>,
-                                <c:out value='\"${employees.positionlId}\"'/>,
-                                <c:out value='\"${employees.levelId}\"'/>,
-                                <c:out value='\"${employees.devisionId}\"'/>,
-                                    )">
-                        Delete
-                    </button>
-                </td>
-            </tr>
-        </c:forEach>
-        </tbody>
-    </table>
 
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
-         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">CONFIRM DELETE?</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+    <div align="center">
+        <div class="display-flex">
+            <form class="form-inline my-2 my-lg-0 d-inline" action="/employee" method="get">
+                <input type="hidden" name="action" value="search">
+                <input class="form-control mr-sm-2" aria-label="Search" placeholder="name" type="text"
+                       name="search_name">
+                <input class="form-control mr-sm-2" aria-label="Search" placeholder="citizen id" type="text"
+                       name="search_citizen_id">
+                <input class="form-control mr-sm-2" aria-label="Search" placeholder="phone number" type="text"
+                       name="search_phone_numder">
+                <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+            <a href="/employee?action=create" class="d-inline">
+                <button type="button" class="btn btn-primary">Create New</button>
+            </a>
+        </div>
+        <caption><h2>List of Employees</h2></caption>
+        <table class="table table-striped " id="tableCustomer">
+            <thead class="thead-dark">
+            <tr>
+                <th class="col-1">id</th>
+                <th class="col-1">Name</th>
+                <th class="col-1">Day of birth</th>
+                <th>CitizenId</th>
+                <th>Salary</th>
+                <th>NumberPhone</th>
+                <th>Email</th>
+                <th class="col-1">Address</th>
+                <th class="col-1">Position</th>
+                <th class="col-1">Level</th>
+                <th class="col-1">Devision</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <c:forEach var="employees" items="${employees}">
+                <tr>
+                    <td><c:out value="${employees.id}"/></td>
+                    <td><c:out value="${employees.name}"/></td>
+                    <td><c:out value="${employees.birthDay}"/></td>
+                    <td><c:out value="${employees.citizenId}"/></td>
+                    <td><fmt:formatNumber value="${employees.salary}" type="number"/></td>
+                    <td><c:out value="${employees.numberPhone}"/></td>
+                    <td><c:out value="${employees.email}"/></td>
+                    <td><c:out value="${employees.address}"/></td>
+                    <td class="col-1">
+                        <c:forEach items="${positions}" var="positions">
+                            <c:if test="${positions.positionlId eq employees.positionlId}">
+                                ${positions.position}
+                            </c:if>
+                        </c:forEach>
+                    </td>
+                    <td class="col-1">
+                        <c:forEach items="${levels}" var="levels">
+                            <c:if test="${levels.levelId eq employees.levelId}">
+                                ${levels.level}
+                            </c:if>
+                        </c:forEach>
+                    </td>
+                    <td class="col-1">
+                        <c:forEach items="${devisions}" var="devisions">
+                            <c:if test="${devisions.devisionId eq employees.devisionId}">
+                                ${devisions.devision}
+                            </c:if>
+                        </c:forEach>
+                    </td>
+                    <td style="border: none">
+                        <a href="/employee?action=edit&id=${employees.id}">
+                            <button type="button" class="btn btn-primary">
+                                Edit
+                            </button>
+                        </a>
+                        <button type="button" class="btn btn-danger"
+                                data-toggle="modal" data-target="#exampleModalCenter"
+                                onclick="infoDelete(
+                                    <c:out value='${employees.id}'/>,
+                                    <c:out value='\"${employees.name}\"'/>,
+                                    <c:out value='\"${employees.birthDay}\"'/>,
+                                    <c:out value='\"${employees.citizenId}\"'/>,
+                                    <c:out value='\"${employees.salary}\"'/>,
+                                    <c:out value='\"${employees.numberPhone}\"'/>,
+                                    <c:out value='\"${employees.email}\"'/>,
+                                    <c:out value='\"${employees.address}\"'/>,
+                                    <c:out value='\"${employees.positionlId}\"'/>,
+                                    <c:out value='\"${employees.levelId}\"'/>,
+                                    <c:out value='\"${employees.devisionId}\"'/>,
+                                        )">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            </c:forEach>
+            </tbody>
+        </table>
+
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">CONFIRM DELETE?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="/employee" method="post">
+                        <div class="modal-body">
+                            <input type="hidden" name="action" value="delete">
+                            <input type="hidden" id="id_delete" name="id">
+                            <div id="name_delete"></div>
+                            <div id="birthDay_delete"></div>
+                            <div id="email_delete"></div>
+                            <div id="citizenId_delete"></div>
+                            <div id="salary_delele"></div>
+                            <div id="positionlId_delete"></div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">NO</button>
+                            <button type="submit" class="btn btn-danger">YES</button>
+                        </div>
+                    </form>
                 </div>
-                <form action="/employee" method="post">
-                    <div class="modal-body">
-                        <input type="hidden" name="action" value="delete">
-                        <input type="hidden" id="id_delete" name="id">
-                        <div id="name_delete"></div>
-                        <div id="birthDay_delete"></div>
-                        <div id="email_delete"></div>
-                        <div id="citizenId_delete"></div>
-                        <div id="salary_delele"></div>
-                        <div id="positionlId_delete"></div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">NO</button>
-                        <button type="submit" class="btn btn-danger">YES</button>
-                    </div>
-                </form>
             </div>
         </div>
     </div>

@@ -35,8 +35,8 @@ public class CustomerRepository implements ICustomerRepository {
                 customer.setName(resultSet.getString("ho_ten"));
                 customer.setBirthDay(resultSet.getString("ngay_sinh"));
                 customer.setGender(resultSet.getInt("gioi_tinh"));
-                customer.setCitizenId(resultSet.getInt("so_cmnd"));
-                customer.setNumberPhone(resultSet.getInt("so_dien_thoai"));
+                customer.setCitizenId(resultSet.getString("so_cmnd"));
+                customer.setNumberPhone(resultSet.getString("so_dien_thoai"));
                 customer.setEmail(resultSet.getString("email"));
                 customer.setAddress(resultSet.getString("dia_chi"));
                 customer.setCustomerTypeId(resultSet.getInt("ma_loai_khach"));
@@ -63,8 +63,8 @@ public class CustomerRepository implements ICustomerRepository {
             preparedStatement.setString(1, customer.getName());
             preparedStatement.setString(2, customer.getBirthDay());
             preparedStatement.setInt(3, customer.getGender());
-            preparedStatement.setInt(4, customer.getCitizenId());
-            preparedStatement.setInt(5, customer.getNumberPhone());
+            preparedStatement.setString(4, customer.getCitizenId());
+            preparedStatement.setString(5, customer.getNumberPhone());
             preparedStatement.setString(6, customer.getEmail());
             preparedStatement.setString(7, customer.getAddress());
             preparedStatement.setInt(8, customer.getCustomerTypeId());
@@ -95,8 +95,8 @@ public class CustomerRepository implements ICustomerRepository {
                 customer.setName(resultSet.getString("ho_ten"));
                 customer.setBirthDay(resultSet.getString("ngay_sinh"));
                 customer.setGender(resultSet.getInt("gioi_tinh"));
-                customer.setCitizenId(resultSet.getInt("so_cmnd"));
-                customer.setNumberPhone(resultSet.getInt("so_dien_thoai"));
+                customer.setCitizenId(resultSet.getString("so_cmnd"));
+                customer.setNumberPhone(resultSet.getString("so_dien_thoai"));
                 customer.setEmail(resultSet.getString("email"));
                 customer.setAddress(resultSet.getString("dia_chi"));
                 customer.setCustomerTypeId(resultSet.getInt("ma_loai_khach"));
@@ -140,8 +140,8 @@ public class CustomerRepository implements ICustomerRepository {
                 customer.setName(resultSet.getString("ho_ten"));
                 customer.setBirthDay(resultSet.getString("ngay_sinh"));
                 customer.setGender(resultSet.getInt("gioi_tinh"));
-                customer.setCitizenId(resultSet.getInt("so_cmnd"));
-                customer.setNumberPhone(resultSet.getInt("so_dien_thoai"));
+                customer.setCitizenId(resultSet.getString("so_cmnd"));
+                customer.setNumberPhone(resultSet.getString("so_dien_thoai"));
                 customer.setEmail(resultSet.getString("email"));
                 customer.setAddress(resultSet.getString("dia_chi"));
                 customer.setCustomerTypeId(resultSet.getInt("ma_loai_khach"));
@@ -161,8 +161,8 @@ public class CustomerRepository implements ICustomerRepository {
              preparedStatement.setString(1, customer.getName());
              preparedStatement.setString(2, customer.getBirthDay());
              preparedStatement.setInt(3, customer.getGender());
-             preparedStatement.setInt(4, customer.getCitizenId());
-             preparedStatement.setInt(5, customer.getNumberPhone());
+             preparedStatement.setString(4, customer.getCitizenId());
+             preparedStatement.setString(5, customer.getNumberPhone());
              preparedStatement.setString(6, customer.getEmail());
              preparedStatement.setString(7, customer.getAddress());
              preparedStatement.setInt(8, customer.getCustomerTypeId());

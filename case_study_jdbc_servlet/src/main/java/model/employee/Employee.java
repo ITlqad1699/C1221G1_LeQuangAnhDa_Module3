@@ -4,9 +4,9 @@ public class Employee {
     private Integer id;
     private String name;
     private String birthDay;
-    private Integer citizenId;
+    private String citizenId;
     private Double salary;
-    private Integer numberPhone;
+    private String numberPhone;
     private String email;
     private String address;
     private Integer positionlId;
@@ -16,7 +16,7 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(Integer id, String name, String birthDay, Integer citizenId, Double salary, Integer numberPhone, String email, String address, Integer positionlId, Integer levelId, Integer devisionId) {
+    public Employee(Integer id, String name, String birthDay, String citizenId, Double salary, String numberPhone, String email, String address, Integer positionlId, Integer levelId, Integer devisionId) {
         this.id = id;
         this.name = name;
         this.birthDay = birthDay;
@@ -54,11 +54,11 @@ public class Employee {
         this.birthDay = birthDay;
     }
 
-    public Integer getCitizenId() {
+    public String getCitizenId() {
         return citizenId;
     }
 
-    public void setCitizenId(Integer citizenId) {
+    public void setCitizenId(String citizenId) {
         this.citizenId = citizenId;
     }
 
@@ -70,11 +70,11 @@ public class Employee {
         this.salary = salary;
     }
 
-    public Integer getNumberPhone() {
+    public String getNumberPhone() {
         return numberPhone;
     }
 
-    public void setNumberPhone(Integer numberPhone) {
+    public void setNumberPhone(String numberPhone) {
         this.numberPhone = numberPhone;
     }
 

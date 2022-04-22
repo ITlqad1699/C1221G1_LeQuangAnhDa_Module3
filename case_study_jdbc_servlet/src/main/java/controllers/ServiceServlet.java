@@ -47,20 +47,60 @@ public class ServiceServlet extends HttpServlet {
     private void createNewService(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         Integer serviceId = null;
         String name = request.getParameter("name");
-        Double area = Double.valueOf(request.getParameter("area"));
-        Double cost = Double.valueOf(request.getParameter("cost"));
-        Integer maxPeople = Integer.valueOf(request.getParameter("maxPeople"));
+        String serviceCode = request.getParameter("serviceCode");
         String roomStandard = request.getParameter("roomStandard");
         String other = request.getParameter("other");
-        Double swimmingPoolArea = Double.valueOf(request.getParameter("swimmingPoolArea"));
-        Integer floorNum = Integer.valueOf(request.getParameter("floorNum"));
-        Integer rentalTypeId = Integer.valueOf(request.getParameter("rentalTypeId"));
-        Integer serviceTypeId = Integer.valueOf(request.getParameter("serviceTypeId"));
-        Service service = new Service(serviceId,name,area,cost,maxPeople,roomStandard,other,swimmingPoolArea,floorNum,rentalTypeId,serviceTypeId);
+        Double area = -1.0;
+        Double cost = -1.0;
+        Double swimmingPoolArea = -1.0;
+        Integer maxPeople = -1;
+        Integer floorNum = -1;
+        Integer rentalTypeId = null;
+        Integer serviceTypeId = null ;
+        try {
+            area = Double.valueOf(request.getParameter("area"));
+        } catch (NumberFormatException e){
+            e.printStackTrace();
+        }
+        try {
+            cost = Double.valueOf(request.getParameter("cost"));
+        } catch (NumberFormatException e){
+            e.printStackTrace();
+        }
+        try {
+            maxPeople = Integer.valueOf(request.getParameter("maxPeople"));
+        } catch (NumberFormatException e){
+            e.printStackTrace();
+        }
+        try {
+            swimmingPoolArea = Double.valueOf(request.getParameter("swimmingPoolArea"));
+        } catch (NumberFormatException e){
+            e.printStackTrace();
+        }
+        try {
+            floorNum = Integer.valueOf(request.getParameter("floorNum"));
+        } catch (NumberFormatException e){
+            e.printStackTrace();
+        }
+        try {
+            rentalTypeId = Integer.valueOf(request.getParameter("rentalTypeId"));
+        } catch (NumberFormatException e){
+            e.printStackTrace();
+        }
+        try {
+            serviceTypeId = Integer.valueOf(request.getParameter("serviceTypeId"));
+        } catch (NumberFormatException e){
+            e.printStackTrace();
+        }
+        Service service = new Service(serviceId,serviceCode,name,area,cost,maxPeople,roomStandard,other,swimmingPoolArea,floorNum,rentalTypeId,serviceTypeId);
         Map<String, String> mapCreate = iServiceService.createService(service);
         if (mapCreate.isEmpty()) {
             response.sendRedirect("/service");
         } else {
+            List<RentalType> rentalTypes = iRentalTypeService.getRentalType();
+            List<ServiceType> serviceTypes = iServiceTypeService.getServiceType();
+            request.setAttribute("rentalTypes", rentalTypes);
+            request.setAttribute("serviceTypes", serviceTypes);
             request.setAttribute("erro", mapCreate);
             request.getRequestDispatcher("view_furama_resort/service/create.jsp").forward(request, response);
         }

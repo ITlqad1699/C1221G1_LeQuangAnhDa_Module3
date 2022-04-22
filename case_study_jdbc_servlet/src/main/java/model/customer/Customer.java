@@ -5,8 +5,8 @@ public class Customer {
     private String name;
     private String birthDay;
     private Integer gender;
-    private Integer citizenId;
-    private Integer numberPhone;
+    private String citizenId;
+    private String numberPhone;
     private String email;
     private String address;
     private Integer customerTypeId;
@@ -16,7 +16,7 @@ public class Customer {
     }
 
 
-    public Customer(Integer id, String name, String birthDay, Integer gender, Integer citizenId, Integer numberPhone, String email, String address, Integer customerTypeId, String customerCode) {
+    public Customer(Integer id, String name, String birthDay, Integer gender, String citizenId, String numberPhone, String email, String address, Integer customerTypeId, String customerCode) {
         this.id = id;
         this.name = name;
         this.birthDay = birthDay;
@@ -26,14 +26,6 @@ public class Customer {
         this.email = email;
         this.address = address;
         this.customerTypeId = customerTypeId;
-        this.customerCode = customerCode;
-    }
-
-    public String getCustomerCode() {
-        return customerCode;
-    }
-
-    public void setCustomerCode(String customerCode) {
         this.customerCode = customerCode;
     }
 
@@ -69,19 +61,19 @@ public class Customer {
         this.gender = gender;
     }
 
-    public Integer getCitizenId() {
+    public String getCitizenId() {
         return citizenId;
     }
 
-    public void setCitizenId(Integer citizenId) {
+    public void setCitizenId(String citizenId) {
         this.citizenId = citizenId;
     }
 
-    public Integer getNumberPhone() {
+    public String getNumberPhone() {
         return numberPhone;
     }
 
-    public void setNumberPhone(Integer numberPhone) {
+    public void setNumberPhone(String numberPhone) {
         this.numberPhone = numberPhone;
     }
 
@@ -109,18 +101,11 @@ public class Customer {
         this.customerTypeId = customerTypeId;
     }
 
-    @Override
-    public String toString() {
-        return "Customer{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", birthDay='" + birthDay + '\'' +
-                ", gender=" + gender +
-                ", citizenId=" + citizenId +
-                ", numberPhone=" + numberPhone +
-                ", email='" + email + '\'' +
-                ", address='" + address + '\'' +
-                ", customerTypeId=" + customerTypeId +
-                '}';
+    public String getCustomerCode() {
+        return customerCode;
+    }
+
+    public void setCustomerCode(String customerCode) {
+        this.customerCode = customerCode;
     }
 }

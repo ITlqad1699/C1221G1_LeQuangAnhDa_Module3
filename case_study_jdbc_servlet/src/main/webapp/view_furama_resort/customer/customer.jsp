@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
     <title>Title</title>
@@ -15,40 +16,42 @@
 </head>
 <body>
 
-<div class="container border" style="width: 100%">
-    <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4  bg-white border-bottom box-shadow my-0 "
-         style="background: #046056;">
-        <h5 class="my-0 mr-md-auto font-weight-normal"><img
-                src="https://phuongviethcm.com/wp-content/uploads/2019/07/FURAMA.png"
-                style="width: 60px; height: 60px"></h5>
-        <a class="btn btn-outline-primary" href="#">Sign up</a>
-    </div>
-    <nav class="navbar navbar-expand-lg p-2 my-0 fixed col " style="background: darkolivegreen;">
-        <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link text-white" href="index.jsp">Home <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="/employee">Employee</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="/customer">Customer</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="/service">Service</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="/contract">Contract</a>
-                </li>
-            </ul>
-            <form class="form-inline my-2 my-lg-0" action="/customer" method="get">
-                <input type="hidden" name="action" value="search">
-                <input class="form-control mr-sm-2" placeholder="Search" aria-label="Search" type="text" name="search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
+<div class="container border col-12 " style="width: 100%">
+        <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4  bg-white border-bottom box-shadow my-0 "
+             style="background: #046056;">
+            <h5 class="my-0 mr-md-auto font-weight-normal"><img
+                    src="https://phuongviethcm.com/wp-content/uploads/2019/07/FURAMA.png"
+                    style="width: 60px; height: 60px"></h5>
+            <a class="btn btn-outline-primary" href="#">Sign up</a>
         </div>
-    </nav>
+        <nav class="navbar navbar-expand-lg p-2 my-0 col " style="background: darkolivegreen;">
+            <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link text-white" href="index.jsp">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="/employee">Employee</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="/customer">Customer</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="/service">Service</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="/contract">Contract</a>
+                    </li>
+                </ul>
+                <form class="form-inline my-2 my-lg-0" action="/customer" method="get">
+                    <input type="hidden" name="action" value="search">
+                    <input class="form-control mr-sm-2" placeholder="Search" aria-label="Search" type="text"
+                           name="search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                </form>
+            </div>
+        </nav>
+
     <%-- Create New --%>
     <a href="/customer?action=create">
         <button type="button" class="btn btn-primary">Create New</button>
@@ -79,7 +82,7 @@
                     <td><c:out value="${cutomers.birthDay}"/></td>
                     <td>
                         <c:if test="${cutomers.gender == 0}">
-                           Female
+                            Female
                         </c:if>
                         <c:if test="${cutomers.gender == 1}">
                             Male
@@ -90,7 +93,7 @@
                     <td><c:out value="${cutomers.email}"/></td>
                     <td><c:out value="${cutomers.address}"/></td>
                     <td class="col-1">
-                        <c:forEach items="${customerType}" var="customerType" >
+                        <c:forEach items="${customerType}" var="customerType">
                             <c:if test="${customerType.customerTypeId eq cutomers.customerTypeId}">
                                 ${customerType.customerType}
                             </c:if>
@@ -160,7 +163,7 @@
 </body>
 </html>
 <script>
-    function infoDelete(id, name, email, country, birthDay, gender, citizenId, numberPhone, address, customerTypeId,customerCode) {
+    function infoDelete(id, name, email, country, birthDay, gender, citizenId, numberPhone, address, customerTypeId, customerCode) {
         document.getElementById("id_delete").value = id;
         document.getElementById("name_delete").innerText = "Name: " + name;
         document.getElementById("email_delelte").innerText = "Email " + email;
@@ -177,7 +180,8 @@
         $('#tableCustomer').dataTable({
             "dom": 'lrtip',
             "lengthChange": false,
-            "pageLength": 3
+            "pageLength": 3,
+            // "ordering": false
         })
     })
 </script>

@@ -50,7 +50,8 @@
             </tr>
             <tr>
                 <th> Salary</th>
-                <td><fmt:parseNumber var="salary" value="${employee.getSalary()}"
+                <td>
+                    <fmt:parseNumber var="salary" value="${employee.getSalary()}"
                                      type="number"/>
                     <input type="text" name="salary" size="45"
                            value="${salary}"
