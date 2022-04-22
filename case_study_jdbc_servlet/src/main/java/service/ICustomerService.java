@@ -1,7 +1,6 @@
 package service;
 
-import model.Customer;
-
+import model.customer.Customer;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
@@ -17,5 +16,7 @@ public interface ICustomerService {
 
     List<Customer> search(String searching);
 
-    Map<String, String> updateUser(Customer customer);
+    Map<String, String> updateCustomer(Customer customer) throws SQLException;
+
+
 }

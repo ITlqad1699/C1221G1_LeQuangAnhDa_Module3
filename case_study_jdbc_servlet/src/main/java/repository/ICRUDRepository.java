@@ -1,7 +1,5 @@
 package repository;
 
-import model.Customer;
-
 import java.sql.SQLException;
 import java.util.List;
 
@@ -16,5 +14,6 @@ public interface ICRUDRepository<E> {
 
     List<E> search(String searching);
 
-    boolean update(E e) throws SQLException;
+    void update(E e) throws SQLException;
+
 }

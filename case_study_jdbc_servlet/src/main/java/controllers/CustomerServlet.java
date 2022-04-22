@@ -1,8 +1,11 @@
 package controllers;
 
-import model.Customer;
+import model.customer.Customer;
+import model.customer.CustomerType;
 import service.ICustomerService;
-import service.impl.CustomerService;
+import service.iget_type.ICustomerTypeService;
+import service.impl.customer_impl.CustomerService;
+import service.impl.customer_impl.CustomerTypeService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,8 +20,11 @@ import java.util.Map;
 @WebServlet(name = "CustomerServlet", urlPatterns = "/customer")
 public class CustomerServlet extends HttpServlet {
     ICustomerService customerService = new CustomerService();
+    ICustomerTypeService iCustomerTypeService = new CustomerTypeService();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("utf-8");
+        response.setContentType("text/html;charset=UTF-8");
         String action = request.getParameter("action");
         if (action == null) {
             action = "";
@@ -28,7 +34,11 @@ public class CustomerServlet extends HttpServlet {
                 createNewCustomer(request, response);
                 break;
             case "edit":
-                editCustomer(request,response);
+                try {
+                    editCustomer(request,response);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
                 break;
             case "delete":
                 try {
@@ -40,7 +50,7 @@ public class CustomerServlet extends HttpServlet {
         }
     }
 
-    private void editCustomer(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    private void editCustomer(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, SQLException {
         String name = request.getParameter("name");
         String birthDay = request.getParameter("birthDay");
         Integer gender = Integer.valueOf(request.getParameter("gender"));
@@ -50,23 +60,16 @@ public class CustomerServlet extends HttpServlet {
         String address = request.getParameter("address");
         Integer customerTypeId = Integer.valueOf(request.getParameter("customerTypeId"));
         int id = Integer.parseInt(request.getParameter("id"));
-        Customer customer = customerService.selectCustomer(id);
+        String customerCode = request.getParameter("customerCode");
+        Customer customer = new Customer(id,name,birthDay,gender,citizenId,numberPhone,email,address,customerTypeId,customerCode);
         Map<String, String> map;
         if (customer != null) {
-            customer.setName(name);
-            customer.setEmail(email);
-            customer.setBirthDay(birthDay);
-            customer.setGender(gender);
-            customer.setCitizenId(citizenId);
-            customer.setNumberPhone(numberPhone);
-            customer.setAddress(address);
-            customer.setCustomerTypeId(customerTypeId);
-            map = customerService.updateUser(customer);
+            map = customerService.updateCustomer(customer);
             if (map.isEmpty()) {
                 response.sendRedirect("/customer");
             } else {
                 request.setAttribute("erro", map);
-                request.getRequestDispatcher("furama_resort/customer/create.jsp").forward(request, response);
+                request.getRequestDispatcher("view_furama_resort/customer/edit.jsp").forward(request, response);
             }
         }
     }
@@ -87,19 +90,21 @@ public class CustomerServlet extends HttpServlet {
         String address = request.getParameter("address");
         Integer customerTypeId = Integer.valueOf(request.getParameter("customerTypeId"));
         Integer id = null;
-        Customer customer = new Customer(id, name, birthDay, gender, citizenId, numberPhone, email, address, customerTypeId);
-        System.out.println(customer);
+        String customerCode = request.getParameter("customerCode");
+        Customer customer = new Customer(id, name, birthDay, gender, citizenId, numberPhone, email, address, customerTypeId,customerCode);
         Map<String, String> mapCreate = customerService.createCustomer(customer);
         if (mapCreate.isEmpty()) {
             response.sendRedirect("/customer");
         } else {
             request.setAttribute("erro", mapCreate);
-            request.getRequestDispatcher("furama_resort/customer/create.jsp").forward(request, response);
+            request.getRequestDispatcher("view_furama_resort/customer/create.jsp").forward(request, response);
         }
     }
 
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("utf-8");
+        response.setContentType("text/html;charset=UTF-8");
         String action = request.getParameter("action");
         if (action == null) {
             action = "";
@@ -122,8 +127,10 @@ public class CustomerServlet extends HttpServlet {
     private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
         Customer customer = customerService.selectCustomer(id);
+        List<CustomerType> customerTypes = iCustomerTypeService.getCustomerType();
+        request.setAttribute("customerType", customerTypes);
         request.setAttribute("customer",customer);
-        request.getRequestDispatcher("furama_resort/customer/edit.jsp").forward(request,response);
+        request.getRequestDispatcher("view_furama_resort/customer/edit.jsp").forward(request,response);
     }
 
     private void searchCustomer(HttpServletRequest request, HttpServletResponse response) {
@@ -131,7 +138,7 @@ public class CustomerServlet extends HttpServlet {
         List<Customer> customers = customerService.search(searching);
         request.setAttribute("cutomers", customers);
         try {
-            request.getRequestDispatcher("furama_resort/customer/customer.jsp").forward(request, response);
+            request.getRequestDispatcher("view_furama_resort/customer/customer.jsp").forward(request, response);
         } catch (ServletException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -140,14 +147,18 @@ public class CustomerServlet extends HttpServlet {
     }
 
     private void showCreateForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("furama_resort/customer/create.jsp").forward(request, response);
+        List<CustomerType> customerTypes = iCustomerTypeService.getCustomerType();
+        request.setAttribute("customerType", customerTypes);
+        request.getRequestDispatcher("view_furama_resort/customer/create.jsp").forward(request, response);
     }
 
     private void showListCustomer(HttpServletRequest request, HttpServletResponse response) {
         List<Customer> customers = customerService.selectAllCustomer();
         request.setAttribute("cutomers", customers);
+        List<CustomerType> customerTypes = iCustomerTypeService.getCustomerType();
+        request.setAttribute("customerType", customerTypes);
         try {
-            request.getRequestDispatcher("furama_resort/customer/customer.jsp").forward(request, response);
+            request.getRequestDispatcher("view_furama_resort/customer/customer.jsp").forward(request, response);
         } catch (ServletException e) {
             e.printStackTrace();
         } catch (IOException e) {
